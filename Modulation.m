@@ -45,53 +45,75 @@ ylabel("Magnitude")
 # 2 )
 
 # Synchronous Demodulation
-s1 = 2 * ( modulated .* c1' )
-s2 = 2 * ( modulated .* c2' )
-s3 = 2 * ( modulated .* c3' )
-
-# Low Pass Filer
-[b,a] = butter(10,fc1/(fs/2))
-filtered1 = filter(b,a,s1)
-
-[b,a] = butter(10,fc2/(fs/2))
-filtered2 = filter(b,a,s2)
-
-[b,a] = butter(10,fc2/(fs/2)) 
-filtered3 = filter(b,a,s3)
+s1 = AMDemodulation( modulated , c1 , fc1 ,fs )
+s2 = AMDemodulation( modulated , c2 , fc2 ,fs )
+s3 = AMDemodulation( modulated , c3 , fc2 ,fs )
 
 # Plot Original and Recieved
 subplot(3, 2, 1)
 plot( t,m1 )
 title('Signal M1 Before Modulation')
 subplot(3, 2, 2)
-plot( t,filtered1 )
+plot( t,s1 )
 title('Signal M1 After Modulation')
 subplot(3, 2, 3)
 plot( t,m2 )
 title('Signal M2 Before Modulation')
 subplot(3, 2, 4)
-plot( t,filtered2 )
+plot( t,s2 )
 title('Signal M2 After Modulation')
 subplot(3, 2, 5)
 plot( t,m3 )
 title('Signal M3 Before Modulation')
 subplot(3, 2, 6)
-plot( t,filtered3 )
+plot( t,s3 )
 title('Signal M3 After Modulation')
 
 # Play to see difference in sound
 sound(m1)
-sound(filtered1)
+sound(s1)
 sound(m2)
-sound(filtered2)
+sound(s2)
 sound(m3)
-sound(filtered3)
+sound(s3)
 
 # 3 )
 
+c4 = cos( 2*pi*fc1*t + 10*pi/180) 
+c5 = cos( 2*pi*fc2*t + 30*pi/180)
+c6 = sin( 2*pi*fc2*t + 90*pi/180)
 
+s4 = AMDemodulation( modulated , c4 , fc1 ,fs )
+s5 = AMDemodulation( modulated , c5 , fc2 ,fs )
+s6 = AMDemodulation( modulated , c6 , fc2 ,fs )
 
+# Plot Original and Recieved
+subplot(3, 2, 1)
+plot( t,m1 )
+title('Signal M1 Before Modulation')
+subplot(3, 2, 2)
+plot( t,s4 )
+title('Signal M1 After Modulation - Phase Shift 10')
+subplot(3, 2, 3)
+plot( t,m2 )
+title('Signal M2 Before Modulation')
+subplot(3, 2, 4)
+plot( t,s5 )
+title('Signal M2 After Modulation - Phase Shift 30')
+subplot(3, 2, 5)
+plot( t,m3 )
+title('Signal M3 Before Modulation')
+subplot(3, 2, 6)
+plot( t,s6 )
+title('Signal M3 After Modulation - Phase Shift 90')
 
+# Play to see difference in sound
+sound(m1)
+sound(s4)
+sound(m2)
+sound(s5)
+sound(m3)
+sound(s6)
 
 
 
